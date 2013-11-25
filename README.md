@@ -28,6 +28,16 @@ The Arduino program has just one thing for you to change, if you'd like.  Look d
 That '1000' is how many milliseconds the Arduino is going to wait between each time it records information from the hardware.  The default is one second, but change it to whatever is appropriate for your project!
 
 
-If you hook up some voltage into one of the analog inputs of the Arduino after loading this software, you can open the Serial Monitor in the Arduino software, and you should see some numbers reporting to the window every at every interval (1 second by default).  Specifically, you're seeing the voltages being measured on each of the 6 analog inputs at each interval, then the number '65535' indicating that the update is compl
+If you hook up some voltage into one of the analog inputs of the Arduino after loading this software, you can open the Serial Monitor in the Arduino software, and you should see some numbers reporting to the window every at every interval (1 second by default).  Specifically, you're seeing the voltages being measured on each of the 6 analog inputs at each interval, then the number '65535' indicating that the update is complete.  Congrats!  Data is making its way onto your computer.
 
-Note, the number '65535' will appear once every update; this is a terminating line telling us that the update is complete.
+### Setting Up Your Web Server
+
+The node part of nodeuinoSensorArray is a very simple web server meant to take that data you put into your serial port on the last step, and push it up to a post on the Internet.  This is a free alternative to buying an Arduino ethernet shield, but the tradeoff is that we have to set up some free software first:
+
+1.  Install [node.js](http://nodejs.org/).  This is a system for making web servers (and other cool stuff) using simple JavaScript code.  It's great for beginners, since there's lots of open source projects you can grab and use, and it's great for scientists, because it's free :)
+2.  Install [npm](https://npmjs.org/).  npm stands for Node Package Manager, and it is a simple tool for grabbing and installing some of the open source software you'll need in your node projects.
+
+Once node and npm are installed, we can use nmp to grab some of the code that is going to run behind the scenes on our server, that make working with node so easy.  In whatever directory you want to work in, do the following commands:
+
+npm install 
+
