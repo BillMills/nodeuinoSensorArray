@@ -20,7 +20,14 @@ The file simpleReader.ino included with this git repository is the code that wil
 3.  Open the simpleReader.ino file, and hit the Upload button.  Everthing should load up and your hardware is good to go!
 
 
-## Options
+#### Options
 The Arduino program has just one thing for you to change, if you'd like.  Look down at the very bottom of the file, for the line that says 
+    
     delay(1000);
+    
 That '1000' is how many milliseconds the Arduino is going to wait between each time it records information from the hardware.  The default is one second, but change it to whatever is appropriate for your project!
+
+
+If you hook up some voltage into one of the analog inputs of the Arduino after loading this software, you can open the Serial Monitor in the Arduino software, and you should see some numbers reporting to the window every at every interval (1 second by default).  Specifically, you're seeing the voltages being measured on each of the 6 analog inputs at each interval, then the number '65535' indicating that the update is compl
+
+Note, the number '65535' will appear once every update; this is a terminating line telling us that the update is complete.
