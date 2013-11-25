@@ -37,7 +37,47 @@ The node part of nodeuinoSensorArray is a very simple web server meant to take t
 1.  Install [node.js](http://nodejs.org/).  This is a system for making web servers (and other cool stuff) using simple JavaScript code.  It's great for beginners, since there's lots of open source projects you can grab and use, and it's great for scientists, because it's free :)
 2.  Install [npm](https://npmjs.org/).  npm stands for Node Package Manager, and it is a simple tool for grabbing and installing some of the open source software you'll need in your node projects.
 
-Once node and npm are installed, we can use nmp to grab some of the code that is going to run behind the scenes on our server, that make working with node so easy.  In whatever directory you want to work in, do the following commands:
+Once node and npm are installed, we can use npm to grab some of the code that is going to run behind the scenes on our server, that make working with node so easy.  In whatever directory you want to work in, do the following commands:
 
-npm install 
+    npm install serialport
 
+This installs the library that lets node talk to the USB connection to the Arduino.  If that goes without any complaints, open nodeSerial.js and look for the line that looks like
+
+    serialName = '/dev/tty.usbmodem1411',
+
+You'll have to change the value between the single quotes to whatever you set the Tools/Serial Port option to in the Arduino software.  Once that's done, just do
+
+    node nodeSerial.js
+    
+And your web server should be live and online!  Open a web browser and go to
+
+    localhost:8000/?callback=testFunction
+    
+And you should see the voltages being read by your Arduino's analog inputs, packed in a JSONP object - if you're not familiar with JSONP, it's just a convenient standard for passing information around between websites.  Voila!  You are successfully posting real measurements to the Internet, from where you can use that information to build any sort of monitoring system you like.
+
+#### Options
+
+The node web server has a few things that you can tweak if you like:
+
+-The channel names can be customized to reflect whatever you've plugged into each of your analog inputs.  Look for the lines that look like:
+
+        channelName = [ "'Apollo'",
+                        "'Bacchus'",
+                        "'Cerberus'",
+                        "'Daedalus'",
+                        "'Echo'",
+                        "'Fury'"
+                        ]
+
+and change the names within the single quotes to anything you want.
+
+-The port number that your data is broadcasting on can be modified at will too.  Just look for the line
+
+    server.listen(8000);
+    
+and change the 8000 to whatever you want.
+
+
+## Future Improvements
+
+nodeuinoSensorArray is a living project!  In the nearish future, I intend to add server-side data logging so you can keep track of your measurements, and some basic visalization of your data in the browser.  Ideas on integrating and calibrating various sensors are also on the menu, but in principle any sensor whose output goes to the Arduino analog inputs should be compatible.
