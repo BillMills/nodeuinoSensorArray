@@ -40,8 +40,9 @@ The node part of nodeuinoSensorArray is a very simple web server meant to take t
 Once node and npm are installed, we can use npm to grab some of the code that is going to run behind the scenes on our server, that make working with node so easy.  In whatever directory you want to work in, do the following commands:
 
     npm install serialport
+    npm install connect
 
-This installs the library that lets node talk to the USB connection to the Arduino.  If that goes without any complaints, open nodeSerial.js and look for the line that looks like
+This installs the library that lets node talk to the USB connection to the Arduino, and which will help post a page summarizing the results afterwards.  If that goes without any complaints, open nodeSerial.js and look for the line that looks like
 
     serialName = '/dev/tty.usbmodem1411',
 
@@ -76,6 +77,10 @@ and change the names within the single quotes to anything you want.
     server.listen(8000);
     
 and change the 8000 to whatever you want.
+
+
+## Visualization Page
+Is what index.html will eventually become!  Right now, it just packs stuff from the JSON post into an ever-lengthening array.
 
 
 ## Future Improvements
