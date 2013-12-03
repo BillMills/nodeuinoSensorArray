@@ -1,0 +1,52 @@
+<html>
+
+	<head>
+	</head>
+
+	<body>
+		<script>
+			var i;
+
+			//globals
+			//same channel names as in nodeSerial
+		    channelName = [ "Apollo",
+		                    "Bacchus",
+		                    "Cerberus",
+		                    "Daedalus",
+		                    "Echo",
+		                    "Fury"
+		                    ];
+		    //history holds each readout with a timestamp
+		    history = {};
+		    for(i=0; i<channelName.length; i++){
+		    	history[channelName[i]] = [];
+		    }
+		    history.timeStamp = [];
+		    //URL where nodeSerial posts the JSON to:
+		    dataURL = 'http://localhost:8000/?callback=grabParameters';
+
+		    //append another data point onto the history record
+			function grabParameters(data){
+				var i;
+
+				for(i=0; i<channelName.length; i++){
+					history[channelName[i]][history[channelName[i]].length] = data[channelName[i]];
+				}
+				history.timeStamp[history.timeStamp.length] = Date.now();
+			}
+
+			//get the data from wherever it's being posted
+			function fetchData(){
+				var script = document.createElement('script');
+
+				script.setAttribute('src', dataURL);
+
+				document.head.appendChild(script);
+			}
+
+			loop = setInterval(fetchData, 1000);
+			
+		</script>
+	</body>
+
+</html>

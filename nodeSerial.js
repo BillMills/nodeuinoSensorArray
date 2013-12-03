@@ -4,6 +4,7 @@ var http = require('http'),
     childProcess = require('child_process'),
     serialport = require("serialport"),
     serialPort = require("serialport").SerialPort,
+    connect = require('connect'),
     //the name of the serial port you chose in the arduino menu /Tools/Serial Port
     serialName = '/dev/tty.usbmodem1411',
     //some variables for later
@@ -60,6 +61,11 @@ server = http.createServer(function (request, response) {
 
 // Listen on port 8000, IP defaults to 127.0.0.1
 server.listen(8000);
+
+//post index.html at 8080
+connect.createServer(
+    connect.static(__dirname)
+).listen(8080);
 
 // Put a friendly message on the terminal
 console.log("Server running at http://127.0.0.1:8000/");
