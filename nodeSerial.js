@@ -5,6 +5,7 @@ var http = require('http'),
     serialport = require("serialport"),
     serialPort = require("serialport").SerialPort,
     connect = require('connect'),
+    fs = require('fs'),
     //the name of the serial port you chose in the arduino menu /Tools/Serial Port
     serialName = '/dev/tty.usbmodem1411',
     //some variables for later
@@ -28,6 +29,9 @@ serial.on("open", function () {
         //65535 marks the end of an update; when we get there, build the output string from the stuff we stuck in [data]
         if(parseInt(chunk,10) != 65535){
             data[index] = parseFloat(chunk);  //hold the new piece of data in the array
+            //update logs
+            fs.appendFile('analog'+index+'.txt', new Date() + ', ' + data[index] + '\n');
+
             index++;                          //step ahead to the next array index
         } else{
             output = '({';                    //build a JSON outpt

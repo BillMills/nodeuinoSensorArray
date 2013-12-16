@@ -32,61 +32,10 @@
 		                    "Echo",
 		                    "Fury"
 		                    ];
-		    //dataSeries will contain the arrays of [time, voltage] points for dygraphs to plot
-		    dataSeries = {};
-		    for(i=0; i<channelName.length; i++){
-		    	dataSeries[channelName[i]] = [];
-		    }		    
-		    //graphs will hold the dygraph objects
-		    graphs = [];
-		    //URL where nodeSerial posts the JSON to:
-		    dataURL = 'http://localhost:8000/?callback=grabParameters';
-		    //number of consecutive samples to plot:
-		    nSamples = 100;
-
-		    //append another data point onto the history record////////////////////////////////
-			function grabParameters(data){
-				var i;
-
-				for(i=0; i<channelName.length; i++){
-					dataSeries[channelName[i]].push([new Date(), data[channelName[i]]]);
-					if(dataSeries[channelName[i]].length > nSamples)
-						dataSeries[channelName[i]].shift();
-				}
-			}
-
-			//get the data from wherever it's being posted//////////////////////////////////////
-			function fetchData(){
-				//set up a script
-				var script = document.createElement('script');
-				//fetch the raw data
-				script.setAttribute('src', dataURL);
-				//update the graphs
-				script.onload = function(){
-					var i;
-
-					for(i=0; i<graphs.length; i++){
-						graphs[i].updateOptions( { 'file': dataSeries[channelName[i]] } );
-					}
-				}
-				//go!
-				document.head.appendChild(script);
-			}
-
-			//dummy version of fetchData to test w/o hardware:
-			function fetchData(){
-				var i;
-
-				grabParameters({'Apollo':Math.random(), 'Bacchus':Math.random(), 'Cerberus':Math.random(), 'Daedalus':Math.random(), 'Echo':Math.random(), 'Fury':Math.random()});
-
-				for(i=0; i<graphs.length; i++){
-					graphs[i].updateOptions( { 'file': dataSeries[channelName[i]] } );
-				}			
-			}
 
 			//set up graphs for all the analog registers:///////////////////////////////////////
 			for(i=0; i<channelName.length; i++){
-				graphs[i] = new Dygraph(document.getElementById('analog'+i), '', {
+				graphs[i] = new Dygraph(document.getElementById('analog'+i), 'analog'+i+'.txt', {
 					title: channelName[i] + ' v. time',
 					xlabel: 'Time',
 					ylabel: channelName[i],
@@ -94,8 +43,6 @@
 				});
 			}
 
-			//start the loop:///////////////////////////////////////////////////////////////////
-			loop = setInterval(fetchData, 1000);
 			
 		</script>
 	</body>
