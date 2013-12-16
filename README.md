@@ -3,13 +3,11 @@ nodeuinoSensorArray
 
 Welcome!  nodeuinoSensorArray is an open source project assembling some simple, minimal software tools for getting analog voltages out of a circuit and onto your computer using Arduino, and from there onto the Internet using node.js.  Our many thanks to all the open-source Arduino and node examples across the wide web which were 'borrowed' for this project; as always, nodeuinoSensorArray is MIT licensed, for one and all.
 
-As of yet, no actual sensor-relevant software is included here; so far, we just have the bones of going from voltage to serial port to Internet.  Tools for dealing with sensors will be made available here under the same license as I finish them - or patch in things you find anywhere!  nodeuinoSensorArray will work with anything that sends its output back to Ardunio's analog input.
+As of yet, no actual sensor-relevant software is included here; so far, we just have the bones of going from voltage to serial port to data log and Internet.  Tools for dealing with sensors will be made available here under the same license as I finish them - or patch in things you find anywhere!  nodeuinoSensorArray will work with anything that sends its output back to Ardunio's analog input.
 
 ### What You'll Need
 
-nodeuinoSensorArray was developed with an [Arduino Uno](http://arduino.cc/); other than that, all that's required is a breadboard to build a circuit on, and whatever components you want to measure voltages across!  
-
-The dirt cheapest thing we can start with is a [voltage divider](http://en.wikipedia.org/wiki/Voltage_divider), which requires any two resistors and three wires.  Just connect the two resistors in series (ie. end to end, like a daisy chain), then connect one wire from the 5V supply of the Arduino to the start of the resistor chain, and connect the Ardunio's ground to the other end of the chain.  Finally, use the third wire to go from between the two resistors to any of the 6 analog inputs on the Arduino.
+nodeuinoSensorArray was developed with an [Arduino Uno](http://arduino.cc/); other than that, all that's required is a breadboard to build a circuit on, and whatever components you want to measure voltages across!  You can do all the setup and testing with nothing plugged into the Arduino analog inputs at all - you'll just get random floating voltages, but neverthess that won't derail the installation and setup process.  Just plug your detector into any one of the analog pins after setup, and nodeuino will automagically take care of the rest!
 
 ### Programming the Arduino
 
@@ -32,7 +30,7 @@ If you hook up some voltage into one of the analog inputs of the Arduino after l
 
 ### Setting Up Your Web Server
 
-The node part of nodeuinoSensorArray is a very simple web server meant to take that data you put into your serial port on the last step, and push it up to a post on the Internet.  This is a free alternative to buying an Arduino ethernet shield, but the tradeoff is that we have to set up some free software first:
+The node part of nodeuinoSensorArray is a very simple web server meant to take that data you put into your serial port on the last step, and both log it on your computer and push it up to a post on the Internet.  This is a free alternative to buying an Arduino ethernet shield, but the tradeoff is that we have to set up some free software first:
 
 1.  Install [node.js](http://nodejs.org/).  This is a system for making web servers (and other cool stuff) using simple JavaScript code.  It's great for beginners, since there's lots of open source projects you can grab and use, and it's great for scientists, because it's free :)
 2.  Install [npm](https://npmjs.org/).  npm stands for Node Package Manager, and it is a simple tool for grabbing and installing some of the open source software you'll need in your node projects.
@@ -50,15 +48,25 @@ You'll have to change the value between the single quotes to whatever you set th
 
     node nodeSerial.js
     
-And your web server should be live and online!  Open a web browser and go to
+And your web server should be live and online!  Open a web browser and go to 
+
+    localhost:8080
+    
+and you can see a visualization of all the data you've logged to date, thanks to the tremendous [dygraphs](http://dygraphs.com/) package (note this requires the file index.html to be in the same directory as nodeSerial.js and all the log files, but this will be correct by default if you didn't move stuff around).
+
+For the web-development savvy, also check out
 
     localhost:8000/?callback=testFunction
     
-And you should see the voltages being read by your Arduino's analog inputs, packed in a JSONP object - if you're not familiar with JSONP, it's just a convenient standard for passing information around between websites.  Voila!  You are successfully posting real measurements to the Internet, from where you can use that information to build any sort of monitoring system you like.
+And you should see the voltages being read by your Arduino's analog inputs, packed in a JSONP object, in case you want to fetch what's happening now across domains.
+
+Also, in the same directory as nodeSerial.js, you should now see some files called analog0.txt, analog1.txt, ... , analog5.txt; these files contain data logs of everything that's been recored on your six analog inputs, with timestamps for posterity.
+
+Voila!  You are successfully posting real measurements to the Internet, from where you can use that information to build any sort of monitoring system you like, and automatically digitally logging data from your experiment with a cheap piece of electronics you built yourself!
 
 #### Options
 
-The node web server has a few things that you can tweak if you like:
+The node web server nodeSerial.js  and visualization page index.html have a few things that you can tweak if you like:
 
 -The channel names can be customized to reflect whatever you've plugged into each of your analog inputs.  Look for the lines that look like:
 
@@ -76,13 +84,13 @@ and change the names within the single quotes to anything you want.
 
     server.listen(8000);
     
-and change the 8000 to whatever you want.
+and change the 8000 to whatever you want.  You can also move the visualization page off of port 8080 by changing the port number in the block:
 
-
-## Visualization Page
-Is what index.html will eventually become!  Right now, it just packs stuff from the JSON post into an ever-lengthening array.
-
+    //post index.html at 8080
+    connect.createServer(
+        connect.static(__dirname)
+    ).listen(8080);
 
 ## Future Improvements
 
-nodeuinoSensorArray is a living project!  In the nearish future, I intend to add server-side data logging so you can keep track of your measurements, and some basic visalization of your data in the browser.  Ideas on integrating and calibrating various sensors are also on the menu, but in principle any sensor whose output goes to the Arduino analog inputs should be compatible.
+So far, nodeuinoSensorArray is a generic data logger, broadcaster and visualizer based on an Arduino and a node server.  In future, I would like to offer the same or similar functionality using different techniques and tools, such as server free with an Arduino ethernet shield, or portable using a Raspberry Pi - and of course, suggestions always welcome!
