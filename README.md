@@ -60,7 +60,7 @@ For the web-development savvy, also check out
     
 And you should see the voltages being read by your Arduino's analog inputs, packed in a JSONP object, in case you want to fetch what's happening now across domains.
 
-Also, in the same directory as nodeSerial.js, you should now see some files called analog0.txt, analog1.txt, ... , analog5.txt; these files contain data logs of everything that's been recored on your six analog inputs, with timestamps for posterity.
+Also, in the same directory as nodeSerial.js, you should now see some files called analog0.txt, analog1.txt, ... , analog5.txt; these files contain data logs of everything that's been recorded on your six analog inputs, with timestamps for posterity.
 
 Voila!  You are successfully posting real measurements to the Internet, from where you can use that information to build any sort of monitoring system you like, and automatically digitally logging data from your experiment with a cheap piece of electronics you built yourself!
 
