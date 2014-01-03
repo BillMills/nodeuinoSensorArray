@@ -28,7 +28,7 @@ void loop() {
   float voltage4 = sensorValue4 / 1023.0 * 5.0;
   float voltage5 = sensorValue5 / 1023.0 * 5.0;
   
-  unsigned int terminate = 0xFFFFFFFF;
+  unsigned int terminate = 0xFFFF;
   // print out the values:
   Serial.println(voltage0);
   Serial.println(voltage1);
