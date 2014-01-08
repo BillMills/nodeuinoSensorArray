@@ -3,7 +3,7 @@
   Reads an analog input on pins 0-5, converts it to voltage, and prints the result to the serial monitor.
  
  This example code is in the public domain.
- */
+*/
 
 // the setup routine runs once when you press reset:
 void setup() {
@@ -28,15 +28,26 @@ void loop() {
   float voltage4 = sensorValue4 / 1023.0 * 5.0;
   float voltage5 = sensorValue5 / 1023.0 * 5.0;
   
-  unsigned int terminate = 0xFFFF;
   // print out the values:
+  Serial.println("begin0");
   Serial.println(voltage0);
+  Serial.println("end0");
+  Serial.println("begin1");
   Serial.println(voltage1);
+  Serial.println("end1");
+  Serial.println("begin2");
   Serial.println(voltage2);
+  Serial.println("end2");
+  Serial.println("begin3");
   Serial.println(voltage3);
+  Serial.println("end3");
+  Serial.println("begin4");
   Serial.println(voltage4);
+  Serial.println("end4");
+  Serial.println("begin5");
   Serial.println(voltage5);
-  Serial.println(terminate);
+  Serial.println("end5");
+  
   //sample every n milliseconds:
   delay(1000);
 }
