@@ -6,8 +6,8 @@ var http = require('http'),
     serialPort = require("serialport").SerialPort,
     connect = require('connect'),
     fs = require('fs'),
-    //the name of the serial port you chose in the arduino menu /Tools/Serial Port
-    serialName = '/dev/tty.usbmodem1411',
+    //the name of the serial port you chose in the arduino menu /Tools/Serial Port OR on rpi wherever the Arduino entry in ls -lsh /dev/serial/by-id/ points
+    serialName = '/dev/ttyACM0',
     //some variables for later
     fxnCall, server, data = [], index=0, i, output, queryData, buffer = [null, null, null],
     // Create new serialport object, set the baudrate to 9600 for arduino, and define the parser to make sure it knows what a new line is:
@@ -38,7 +38,7 @@ serial.on("open", function () {
         function validate(){
             var index, i; 
 
-            if(parseInt(buffer[0][buffer[0].length-2], 10) != parseInt(buffer[2][buffer[2].length-2], 10)){
+            if(buffer[0] && buffer[2] && parseInt(buffer[0][buffer[0].length-2], 10) != parseInt(buffer[2][buffer[2].length-2], 10)){
                 //start and end flags don't match, abort
                 console.log('Flag mismatch');
                 buffer[0] = null;
